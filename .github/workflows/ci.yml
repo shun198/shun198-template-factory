@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - 'codex/**'
   pull_request:
 
 jobs:
@@ -31,7 +30,7 @@ jobs:
 
       - uses: astral-sh/setup-uv@v8.3.2
         with:
-          version-file: './templates/python/uv.lock'
+          version-file: './pyproject.toml'
           enable-cache: true
 
       - name: Setup
