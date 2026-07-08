@@ -35,7 +35,7 @@ Any change to commands, entrypoints, or workflow behavior must update:
 Templates may include these placeholders:
 
 - `__PROJECT_NAME__`
-- `__PROJECT_SLUG__`
+- `template_app`
 - `__PYTHON_PACKAGE__`
 
 Do not introduce new placeholders unless `scripts/create-template.sh` is updated accordingly.

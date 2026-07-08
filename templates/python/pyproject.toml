@@ -1,5 +1,5 @@
 [project]
-name = "__PROJECT_SLUG__"
+name = "template_app"
 version = "0.1.0"
 description = "Python starter generated from template-factory"
 readme = "README.md"
@@ -16,7 +16,7 @@ dev = [
 ]
 
 [project.scripts]
-__PROJECT_SLUG__ = "template_app.cli:app"
+template_app = "template_app.cli:app"
 
 [build-system]
 requires = ["hatchling"]

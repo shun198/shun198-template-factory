@@ -31,7 +31,7 @@ jobs:
 
       - uses: astral-sh/setup-uv@v8
         with:
-          python-version: '3.14'
+          python-version: './templates/python/.python-version'
 
       - name: Setup
         run: make setup

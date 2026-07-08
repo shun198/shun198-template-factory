@@ -40,7 +40,7 @@ make validate
 ./scripts/create-template.sh python my-python-app
 ```
 
-The script copies a template into a new directory and replaces placeholders such as `__PROJECT_NAME__`, `__PROJECT_SLUG__`, and `__PYTHON_PACKAGE__`.
+The script copies a template into a new directory and replaces placeholders such as `__PROJECT_NAME__`, `template_app`, and `__PYTHON_PACKAGE__`.
 
 ## Design Principles
 

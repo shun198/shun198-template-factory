@@ -31,7 +31,7 @@ replace_placeholders() {
   local python_package="$4"
 
   while IFS= read -r -d '' file; do
-    perl -0pi -e "s/__PROJECT_NAME__/${project_name}/g; s/__PROJECT_SLUG__/${project_slug}/g; s/__PYTHON_PACKAGE__/${python_package}/g; s/${TEMPLATE_PYTHON_PACKAGE}/${python_package}/g" "$file"
+    perl -0pi -e "s/__PROJECT_NAME__/${project_name}/g; s/template_app/${project_slug}/g; s/__PYTHON_PACKAGE__/${python_package}/g; s/${TEMPLATE_PYTHON_PACKAGE}/${python_package}/g" "$file"
   done < <(find "$target_dir" -type f \
     ! -path '*/.git/*' \
     ! -path '*/node_modules/*' \
@@ -47,7 +47,7 @@ rename_placeholder_paths() {
   while IFS= read -r -d '' path; do
     local renamed_path="$path"
     renamed_path="${renamed_path//__PROJECT_NAME__/${project_name}}"
-    renamed_path="${renamed_path//__PROJECT_SLUG__/${project_slug}}"
+    renamed_path="${renamed_path//template_app/${project_slug}}"
     renamed_path="${renamed_path//__PYTHON_PACKAGE__/${python_package}}"
 
     if [[ "$path" != "$renamed_path" ]]; then
@@ -55,7 +55,7 @@ rename_placeholder_paths() {
     fi
   done < <(find "$target_dir" -depth \( \
     -name '*__PROJECT_NAME__*' -o \
-    -name '*__PROJECT_SLUG__*' -o \
+    -name '*template_app*' -o \
     -name '*__PYTHON_PACKAGE__*' \
   \) -print0)
 }
