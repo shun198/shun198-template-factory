@@ -1,0 +1,30 @@
+name: python-template-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          python-version: '3.14'
+
+      - name: Setup
+        run: make setup
+
+      - name: Lint
+        run: make lint
+
+      - name: Format check
+        run: uv run ruff format --check .
+
+      - name: Typecheck
+        run: make typecheck
+
+      - name: Test
+        run: make test
