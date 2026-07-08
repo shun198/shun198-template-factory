@@ -5,6 +5,7 @@
 ## Included Templates
 
 - `templates/python`: Python 3.14+ starter for CLI, small API, and automation use cases
+- `templates/golang`: Go 1.25+ starter for CLI, HTTP API, and batch jobs
 
 ## Repository Layout
 
@@ -38,6 +39,7 @@ make validate
 
 ```bash
 ./scripts/create-template.sh python my-python-app
+./scripts/create-template.sh golang my-go-service
 ```
 
 The script copies a template into a new directory and replaces placeholders such as `__PROJECT_NAME__`, `__PROJECT_SLUG__`, and `__PYTHON_PACKAGE__`.

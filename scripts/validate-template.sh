@@ -23,6 +23,7 @@ COMMON_COMMANDS=(
 
 TEMPLATE_NAMES=(
   "python"
+  "golang"
 )
 
 template_dir() {
@@ -94,6 +95,10 @@ validate_template_specific() {
       require_file "${dir}/.env.example"
       require_make_target "${makefile}" "dev"
       require_make_target "${makefile}" "typecheck"
+      ;;
+    golang)
+      require_file "${dir}/.env.example"
+      require_make_target "${makefile}" "dev"
       ;;
   esac
 }
