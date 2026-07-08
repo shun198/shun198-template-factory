@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Sample CLI",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "__PYTHON_PACKAGE__.cli",
+      "args": ["run-server"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
+      "justMyCode": true
+    }
+  ]
+}
