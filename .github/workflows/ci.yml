@@ -1,0 +1,46 @@
+name: template-factory-ci
+
+on:
+  push:
+    branches:
+      - main
+      - 'codex/**'
+  pull_request:
+
+jobs:
+  validate-structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Validate shell scripts
+        run: |
+          bash -n scripts/create-template.sh
+          bash -n scripts/validate-template.sh
+
+      - name: Validate repository structure
+        run: make validate
+
+  golang-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/golang
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25.0'
+
+      - name: Setup
+        run: make setup
+
+      - name: Lint
+        run: make lint
+
+      - name: Format check
+        run: test -z "$(gofmt -l .)"
+
+      - name: Test
+        run: make test
