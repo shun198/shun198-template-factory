@@ -7,6 +7,7 @@
 - `templates/python`: Python 3.14+ starter for CLI, small API, and automation use cases
 - `templates/golang`: Go 1.25+ starter for CLI, HTTP API, and batch jobs
 - `templates/nestjs`: NestJS starter for backend and internal APIs
+- `templates/nextjs`: Next.js starter for dashboards, SaaS frontends, and admin tools
 
 ## Repository Layout
 
@@ -42,6 +43,7 @@ make validate
 ./scripts/create-template.sh python my-python-app
 ./scripts/create-template.sh golang my-go-service
 ./scripts/create-template.sh nestjs my-nest-api
+./scripts/create-template.sh nextjs my-next-app
 ```
 
 The script copies a template into a new directory and replaces placeholders such as `__PROJECT_NAME__`, `__PROJECT_SLUG__`, and `__PYTHON_PACKAGE__`.

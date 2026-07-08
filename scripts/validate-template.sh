@@ -25,6 +25,7 @@ TEMPLATE_NAMES=(
   "python"
   "golang"
   "nestjs"
+  "nextjs"
 )
 
 template_dir() {
@@ -97,7 +98,7 @@ validate_template_specific() {
       require_make_target "${makefile}" "dev"
       require_make_target "${makefile}" "typecheck"
       ;;
-    golang|nestjs)
+    golang|nestjs|nextjs)
       require_file "${dir}/.env.example"
       require_make_target "${makefile}" "dev"
       ;;
