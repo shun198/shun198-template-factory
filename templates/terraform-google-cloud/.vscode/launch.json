@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Terraform: plan dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "make TF_DIR=envs/dev plan",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

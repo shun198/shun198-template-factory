@@ -11,7 +11,7 @@ jobs:
   validate-structure:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
 
       - name: Validate shell scripts
         run: |
@@ -27,9 +27,9 @@ jobs:
       run:
         working-directory: templates/python
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v8
+      - uses: astral-sh/setup-uv@v4
         with:
           python-version: '3.14'
 
@@ -54,9 +54,9 @@ jobs:
       run:
         working-directory: templates/golang
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v5
         with:
           go-version: '1.25.0'
 
@@ -75,13 +75,13 @@ jobs:
       run:
         working-directory: templates/nestjs
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
 
@@ -103,13 +103,13 @@ jobs:
       run:
         working-directory: templates/nextjs
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v4
         with:
           version: 9
 
@@ -124,3 +124,35 @@ jobs:
 
       - name: Test
         run: make test
+
+  terraform-checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env_dir:
+          - templates/terraform-google-cloud/envs/dev
+          - templates/terraform-google-cloud/envs/prod
+    defaults:
+      run:
+        working-directory: ${{ matrix.env_dir }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Terraform init
+        run: terraform init -backend=false
+
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive ../..
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Trivy config scan
+        uses: aquasecurity/trivy-action@0.24.0
+        with:
+          scan-type: config
+          scan-ref: templates/terraform-google-cloud

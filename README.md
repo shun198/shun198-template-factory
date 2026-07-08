@@ -8,6 +8,7 @@
 - `templates/golang`: Go 1.25+ starter for CLI, HTTP API, and batch jobs
 - `templates/nestjs`: NestJS starter for backend and internal APIs
 - `templates/nextjs`: Next.js starter for dashboards, SaaS frontends, and admin tools
+- `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
 
 ## Repository Layout
 
@@ -36,6 +37,7 @@ make validate
 - validates required template files exist
 - validates required `make` targets exist in each template
 - validates root documentation and workflow files exist
+- runs Terraform formatting checks when Terraform is available
 
 ## Creating a Project From a Template
 
@@ -44,6 +46,7 @@ make validate
 ./scripts/create-template.sh golang my-go-service
 ./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh nextjs my-next-app
+./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ```
 
 The script copies a template into a new directory and replaces placeholders such as `__PROJECT_NAME__`, `__PROJECT_SLUG__`, and `__PYTHON_PACKAGE__`.
@@ -61,5 +64,6 @@ The script copies a template into a new directory and replaces placeholders such
 1. Update the relevant template under `templates/`.
 2. Keep `README.md`, `AGENTS.md`, `CLAUDE.md`, `Makefile`, `.vscode/launch.json`, and `.github/workflows/ci.yml` aligned.
 3. Run `make validate`.
+4. If you changed Terraform files, also run template-level Terraform checks where available.
 
 See [docs/architecture.md](/Users/shunichihirose/repo/shun198-template-factory/docs/architecture.md), [docs/template-policy.md](/Users/shunichihirose/repo/shun198-template-factory/docs/template-policy.md), [AGENTS.md](/Users/shunichihirose/repo/shun198-template-factory/AGENTS.md), and [CLAUDE.md](/Users/shunichihirose/repo/shun198-template-factory/CLAUDE.md) for repository rules.
