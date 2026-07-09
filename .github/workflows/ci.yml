@@ -116,6 +116,37 @@ jobs:
       - name: Build
         run: pnpm run build
 
+  python-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/python
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: templates/python/.python-version
+
+      - uses: astral-sh/setup-uv@v8.3.2
+        with:
+          enable-cache: true
+
+      - name: Setup
+        run: make setup
+
+      - name: Lint
+        run: make lint
+
+      - name: Format check
+        run: uv run ruff format --check .
+
+      - name: Typecheck
+        run: make typecheck
+
+      - name: Test
+        run: make test
+
   nextjs-template:
     runs-on: ubuntu-latest
     defaults:
