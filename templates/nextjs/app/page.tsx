@@ -1,3 +1,4 @@
+import React from 'react';
 import { StatusCard } from '../components/status-card';
 
 export default function HomePage() {

@@ -1,3 +1,5 @@
+import React from 'react';
+
 type StatusCardProps = {
   title: string;
   value: string;

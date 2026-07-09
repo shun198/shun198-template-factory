@@ -4,6 +4,7 @@
 
 ## Included Templates
 
+- `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
 - `templates/nextjs`: Next.js starter for dashboards, SaaS frontends, and admin tools
 
 ## Repository Layout
@@ -24,7 +25,8 @@ template-factory/
 
 ```bash
 make validate
-./scripts/create-template.sh golang my-go-service
+./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+./scripts/create-template.sh nextjs my-next-app
 ```
 
 ## What `make validate` Does
@@ -33,10 +35,12 @@ make validate
 - validates required template files exist
 - validates required `make` targets exist in each template
 - validates root documentation and workflow files exist
+- runs Terraform formatting checks when Terraform is available
 
 ## Creating a Project From a Template
 
 ```bash
+./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ./scripts/create-template.sh nextjs my-next-app
 ```
 
@@ -55,5 +59,6 @@ The script copies the selected template into a new directory and replaces `__PRO
 1. Update the relevant template under `templates/`.
 2. Keep `README.md`, `AGENTS.md`, `CLAUDE.md`, `Makefile`, `.vscode/launch.json`, and `.github/workflows/ci.yml` aligned.
 3. Run `make validate`.
+4. If you changed Terraform files, also run template-level Terraform checks where available.
 
-See [docs/architecture.md](/Users/shunichihirose/repo/shun198-template-factory/docs/architecture.md), [docs/template-policy.md](/Users/shunichihirose/repo/shun198-template-factory/docs/template-policy.md), [AGENTS.md](/Users/shunichihirose/repo/shun198-template-factory/AGENTS.md), and [CLAUDE.md](/Users/shunichihirose/repo/shun198-template-factory/CLAUDE.md) for repository rules.
+See `docs/architecture.md`, `docs/template-policy.md`, `AGENTS.md`, and `CLAUDE.md` for repository rules.
