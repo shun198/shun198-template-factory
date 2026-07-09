@@ -10,6 +10,7 @@ Usage:
   ./scripts/create-template.sh <template-name> <destination-directory>
 
 Examples:
+  ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
   ./scripts/create-template.sh nestjs my-nest-api
 EOF
 }

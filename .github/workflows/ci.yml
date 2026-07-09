@@ -21,6 +21,38 @@ jobs:
       - name: Validate repository structure
         run: make validate
 
+  terraform-checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env_dir:
+          - templates/terraform-google-cloud/envs/dev
+          - templates/terraform-google-cloud/envs/prod
+    defaults:
+      run:
+        working-directory: ${{ matrix.env_dir }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: 1.9.8
+
+      - name: Terraform init
+        run: terraform init -backend=false
+
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive ../..
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Trivy config scan
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: config
+          scan-ref: templates/terraform-google-cloud
+
   nestjs-template:
     runs-on: ubuntu-latest
     defaults:
