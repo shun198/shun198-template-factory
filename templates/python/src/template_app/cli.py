@@ -24,9 +24,7 @@ def run_server() -> None:
             "port": settings.port,
         },
     )
-    typer.echo(
-        f"{settings.app_name} listening on http://{settings.host}:{settings.port}"
-    )
+    typer.echo(f"{settings.app_name} listening on http://{settings.host}:{settings.port}")
 
 
 if __name__ == "__main__":
