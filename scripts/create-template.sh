@@ -10,6 +10,7 @@ Usage:
   ./scripts/create-template.sh <template-name> <destination-directory>
 
 Examples:
+  ./scripts/create-template.sh golang my-go-service
   ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 EOF
 }
@@ -35,6 +36,7 @@ rename_placeholder_paths() {
   local target_dir="$1"
   local project_name="$2"
   local project_slug="$3"
+
   while IFS= read -r -d '' path; do
     local renamed_path="$path"
     renamed_path="${renamed_path//__PROJECT_NAME__/${project_name}}"
@@ -45,6 +47,8 @@ rename_placeholder_paths() {
     fi
   done < <(find "$target_dir" -depth \( \
     -name '*__PROJECT_NAME__*' -o \
+    -name '*__PROJECT_SLUG__*' -o \
+    -name '*__PYTHON_PACKAGE__*' \
     -name '*__PROJECT_SLUG__*' \
   \) -print0)
 }

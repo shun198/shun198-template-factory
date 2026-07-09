@@ -21,6 +21,36 @@ jobs:
       - name: Validate repository structure
         run: make validate
 
+  golang-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/golang
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: templates/golang/go.mod
+
+      - name: Setup
+        run: make setup
+
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.12.2
+          working-directory: templates/golang
+          args: ./...
+
+      - name: Lint
+        run: make lint
+
+      - name: Format check
+        run: test -z "$(gofmt -l .)"
+
+      - name: Test
+        run: make test
+  
   terraform-checks:
     runs-on: ubuntu-latest
     strategy:
