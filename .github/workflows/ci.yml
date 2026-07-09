@@ -146,3 +146,36 @@ jobs:
 
       - name: Test
         run: make test
+
+  nextjs-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/nextjs
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: templates/nextjs/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: templates/nextjs/package.json
+          cache: pnpm
+          cache-dependency-path: templates/nextjs/pnpm-lock.yaml
+
+      - name: Setup
+        run: make setup
+
+      - name: Lint
+        run: make lint
+
+      - name: Format check
+        run: pnpm exec prettier --check .
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        run: make build

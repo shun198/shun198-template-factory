@@ -8,6 +8,7 @@
 - `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
 - `templates/nestjs`: NestJS starter for backend and internal APIs
 - `templates/python`: Python 3.14+ starter for CLI, small API, and automation use cases
+- `templates/nextjs`: Next.js starter for dashboards, SaaS frontends, and admin tools
 
 ## Repository Layout
 
@@ -31,6 +32,7 @@ make validate
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh python my-python-app
+./scripts/create-template.sh nextjs my-next-app
 ```
 
 ## What `make validate` Does
@@ -49,6 +51,7 @@ make validate
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh python my-python-app
+./scripts/create-template.sh nextjs my-next-app
 ```
 
 The script copies the selected template into a new directory and replaces `__PROJECT_NAME__` and `__PROJECT_SLUG__`. For the Python template, it also updates `__PYTHON_PACKAGE__` and the generated package path.

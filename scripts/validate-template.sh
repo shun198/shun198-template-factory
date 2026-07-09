@@ -26,6 +26,7 @@ TEMPLATE_NAMES=(
   "terraform-google-cloud"
   "nestjs"
   "python"
+  "nextjs"
 )
 
 template_dir() {
@@ -112,6 +113,11 @@ validate_template_specific() {
       require_file "${dir}/.env.example"
       require_make_target "${makefile}" "dev"
       require_make_target "${makefile}" "typecheck"
+      ;;
+    nextjs)
+      require_file "${dir}/.env.example"
+      require_make_target "${makefile}" "dev"
+      require_make_target "${makefile}" "build"
       ;;
   esac
 }

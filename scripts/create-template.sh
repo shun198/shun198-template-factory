@@ -15,6 +15,7 @@ Examples:
   ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
   ./scripts/create-template.sh nestjs my-nest-api
   ./scripts/create-template.sh python my-python-app
+  ./scripts/create-template.sh nextjs my-next-app
 EOF
 }
 
