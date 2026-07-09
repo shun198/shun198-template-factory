@@ -11,6 +11,11 @@ app = typer.Typer(help="Starter CLI for __PROJECT_NAME__.")
 logger = logging.getLogger(__name__)
 
 
+@app.callback()
+def main() -> None:
+    """Keep the app in group mode so `run-server` remains an explicit command."""
+
+
 @app.command("run-server")
 def run_server() -> None:
     settings = load_settings()

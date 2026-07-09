@@ -11,8 +11,8 @@ Usage:
   ./scripts/create-template.sh <template-name> <destination-directory>
 
 Examples:
+  ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
   ./scripts/create-template.sh python my-python-app
-  ./scripts/create-template.sh golang my-go-service
 EOF
 }
 
@@ -56,6 +56,7 @@ rename_placeholder_paths() {
     fi
   done < <(find "$target_dir" -depth \( \
     -name '*__PROJECT_NAME__*' -o \
+    -name '*__PROJECT_SLUG__*' -o \
     -name '*template_app*' -o \
     -name '*__PYTHON_PACKAGE__*' \
   \) -print0)

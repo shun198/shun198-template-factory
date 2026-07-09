@@ -4,6 +4,7 @@
 
 ## Included Templates
 
+- `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
 - `templates/python`: Python 3.14+ starter for CLI, small API, and automation use cases
 
 ## Repository Layout
@@ -24,6 +25,7 @@ template-factory/
 
 ```bash
 make validate
+./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ./scripts/create-template.sh python my-python-app
 ```
 
@@ -33,14 +35,17 @@ make validate
 - validates required template files exist
 - validates required `make` targets exist in each template
 - validates root documentation and workflow files exist
+- validates Python template generation
+- runs Terraform formatting checks when Terraform is available
 
 ## Creating a Project From a Template
 
 ```bash
+./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ./scripts/create-template.sh python my-python-app
 ```
 
-The script copies a template into a new directory and replaces placeholders such as `__PROJECT_NAME__`, `template_app`, and `__PYTHON_PACKAGE__`.
+The script copies the selected template into a new directory and replaces `__PROJECT_NAME__` and `__PROJECT_SLUG__`. For the Python template, it also updates the generated package path and `__PYTHON_PACKAGE__`.
 
 ## Design Principles
 
@@ -55,5 +60,6 @@ The script copies a template into a new directory and replaces placeholders such
 1. Update the relevant template under `templates/`.
 2. Keep `README.md`, `AGENTS.md`, `CLAUDE.md`, `Makefile`, `.vscode/launch.json`, and `.github/workflows/ci.yml` aligned.
 3. Run `make validate`.
+4. If you changed Terraform files, also run template-level Terraform checks where available.
 
-See [docs/architecture.md](/Users/shunichihirose/repo/shun198-template-factory/docs/architecture.md), [docs/template-policy.md](/Users/shunichihirose/repo/shun198-template-factory/docs/template-policy.md), [AGENTS.md](/Users/shunichihirose/repo/shun198-template-factory/AGENTS.md), and [CLAUDE.md](/Users/shunichihirose/repo/shun198-template-factory/CLAUDE.md) for repository rules.
+See `docs/architecture.md`, `docs/template-policy.md`, `AGENTS.md`, and `CLAUDE.md` for repository rules.
