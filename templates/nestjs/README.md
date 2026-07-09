@@ -1,4 +1,4 @@
-# __PROJECT_NAME__
+# **PROJECT_NAME**
 
 NestJS starter for backend APIs, admin APIs, and internal tool APIs.
 

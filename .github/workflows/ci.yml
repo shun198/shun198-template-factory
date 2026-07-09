@@ -29,13 +29,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - uses: pnpm/action-setup@v6
+
       - uses: actions/setup-node@v6
         with:
-          node-version: '22'
-
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 9
+          node-version-file: templates/nestjs/package.json
+          cache: pnpm
+          cache-dependency-path: templates/nestjs/pnpm-lock.yaml
 
       - name: Setup
         run: make setup
