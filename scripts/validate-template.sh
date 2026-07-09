@@ -25,6 +25,7 @@ TEMPLATE_NAMES=(
   "golang"
   "terraform-google-cloud"
   "nestjs"
+  "python"
 )
 
 template_dir() {
@@ -107,7 +108,28 @@ validate_template_specific() {
       require_file "${dir}/.env.example"
       require_make_target "${makefile}" "dev"
       ;;
+    python)
+      require_file "${dir}/.env.example"
+      require_make_target "${makefile}" "dev"
+      require_make_target "${makefile}" "typecheck"
+      ;;
   esac
+}
+
+validate_python_generation() {
+  local temp_project="tmp-python-validate-project"
+  local temp_dir="${ROOT_DIR}/${temp_project}"
+
+  rm -rf "${temp_dir}"
+  "${ROOT_DIR}/scripts/create-template.sh" python "${temp_project}" >/dev/null
+
+  if [[ ! -d "${temp_dir}/src/${temp_project//-/_}" ]]; then
+    echo "Generated Python package directory is missing: ${temp_dir}/src/${temp_project//-/_}" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  rm -rf "${temp_dir}"
 }
 
 validate_terraform_if_available() {
@@ -147,6 +169,7 @@ main() {
     validate_template_specific "${name}"
   done
 
+  validate_python_generation
   validate_terraform_if_available
   echo "Template validation completed successfully."
 }
