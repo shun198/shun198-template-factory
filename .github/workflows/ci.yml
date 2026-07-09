@@ -33,14 +33,14 @@ jobs:
         with:
           go-version-file: templates/golang/go.mod
 
+      - name: Setup
+        run: make setup
+
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.1.6
           working-directory: templates/golang
           args: ./...
-
-      - name: Setup
-        run: make setup
 
       - name: Lint
         run: make lint

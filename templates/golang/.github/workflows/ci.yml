@@ -14,13 +14,13 @@ jobs:
         with:
           go-version-file: go.mod
 
+      - name: Setup
+        run: make setup
+
       - uses: golangci/golangci-lint-action@v9
         with:
           version: v2.1.6
           args: ./...
-
-      - name: Setup
-        run: make setup
 
       - name: Format check
         run: test -z "$(gofmt -l .)"
