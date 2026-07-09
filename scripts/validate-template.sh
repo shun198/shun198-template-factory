@@ -94,6 +94,7 @@ validate_template_specific() {
     golang)
       require_file "${dir}/.env.example"
       require_make_target "${makefile}" "dev"
+      ;;
     terraform-google-cloud)
       require_make_target "${makefile}" "init"
       require_make_target "${makefile}" "plan"
