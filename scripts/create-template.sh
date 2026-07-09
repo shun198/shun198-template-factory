@@ -10,7 +10,9 @@ Usage:
   ./scripts/create-template.sh <template-name> <destination-directory>
 
 Examples:
+  ./scripts/create-template.sh golang my-go-service
   ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+  ./scripts/create-template.sh nestjs my-nest-api
   ./scripts/create-template.sh nextjs my-next-app
 EOF
 }
@@ -36,6 +38,7 @@ rename_placeholder_paths() {
   local target_dir="$1"
   local project_name="$2"
   local project_slug="$3"
+
   while IFS= read -r -d '' path; do
     local renamed_path="$path"
     renamed_path="${renamed_path//__PROJECT_NAME__/${project_name}}"

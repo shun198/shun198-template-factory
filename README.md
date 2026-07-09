@@ -4,7 +4,9 @@
 
 ## Included Templates
 
+- `templates/golang`: Go 1.25+ starter for CLI, HTTP API, and batch jobs
 - `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
+- `templates/nestjs`: NestJS starter for backend and internal APIs
 - `templates/nextjs`: Next.js starter for dashboards, SaaS frontends, and admin tools
 
 ## Repository Layout
@@ -25,7 +27,9 @@ template-factory/
 
 ```bash
 make validate
+./scripts/create-template.sh golang my-go-service
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh nextjs my-next-app
 ```
 
@@ -40,7 +44,9 @@ make validate
 ## Creating a Project From a Template
 
 ```bash
+./scripts/create-template.sh golang my-go-service
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh nextjs my-next-app
 ```
 
