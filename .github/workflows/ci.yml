@@ -82,3 +82,36 @@ jobs:
         with:
           scan-type: config
           scan-ref: templates/terraform-google-cloud
+
+  nestjs-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/nestjs
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          package_json_file: templates/nestjs/package.json
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: templates/nestjs/package.json
+          cache: pnpm
+          cache-dependency-path: templates/nestjs/pnpm-lock.yaml
+
+      - name: Setup
+        run: make setup
+
+      - name: Lint
+        run: make lint
+
+      - name: Format check
+        run: pnpm exec prettier --check .
+
+      - name: Test
+        run: make test
+
+      - name: Build
+        run: pnpm run build

@@ -24,6 +24,7 @@ COMMON_COMMANDS=(
 TEMPLATE_NAMES=(
   "golang"
   "terraform-google-cloud"
+  "nestjs"
 )
 
 template_dir() {
@@ -101,6 +102,10 @@ validate_template_specific() {
       require_make_target "${makefile}" "apply"
       require_make_target "${makefile}" "destroy"
       require_make_target "${makefile}" "validate"
+      ;;
+    nestjs)
+      require_file "${dir}/.env.example"
+      require_make_target "${makefile}" "dev"
       ;;
   esac
 }

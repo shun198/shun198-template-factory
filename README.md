@@ -6,6 +6,7 @@
 
 - `templates/golang`: Go 1.25+ starter for CLI, HTTP API, and batch jobs
 - `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
+- `templates/nestjs`: NestJS starter for backend and internal APIs
 
 ## Repository Layout
 
@@ -27,6 +28,7 @@ template-factory/
 make validate
 ./scripts/create-template.sh golang my-go-service
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+./scripts/create-template.sh nestjs my-nest-api
 ```
 
 ## What `make validate` Does
@@ -45,6 +47,7 @@ make validate
 
 The script copies a template into a new directory and replaces placeholders such as `__PROJECT_NAME__`, `__PROJECT_SLUG__`, and `__PYTHON_PACKAGE__`.
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+./scripts/create-template.sh nestjs my-nest-api
 ```
 
 The script copies the selected template into a new directory and replaces `__PROJECT_NAME__` and `__PROJECT_SLUG__`.

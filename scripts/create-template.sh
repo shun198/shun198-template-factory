@@ -12,6 +12,7 @@ Usage:
 Examples:
   ./scripts/create-template.sh golang my-go-service
   ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+  ./scripts/create-template.sh nestjs my-nest-api
 EOF
 }
 
