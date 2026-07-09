@@ -6,6 +6,8 @@ describe('HomePage', () => {
   it('renders sample heading', () => {
     render(<HomePage />);
 
-    expect(screen.getByRole('heading', { name: '__PROJECT_NAME__' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: '__PROJECT_NAME__' }),
+    ).toBeInTheDocument();
   });
 });

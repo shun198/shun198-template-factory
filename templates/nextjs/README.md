@@ -1,4 +1,4 @@
-# __PROJECT_NAME__
+# **PROJECT_NAME**
 
 Next.js App Router starter for SaaS frontends, dashboards, and internal admin tools.
 
