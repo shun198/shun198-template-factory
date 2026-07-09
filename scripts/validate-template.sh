@@ -23,6 +23,7 @@ COMMON_COMMANDS=(
 
 TEMPLATE_NAMES=(
   "golang"
+  "terraform-google-cloud"
 )
 
 template_dir() {
@@ -93,8 +94,43 @@ validate_template_specific() {
     golang)
       require_file "${dir}/.env.example"
       require_make_target "${makefile}" "dev"
+    terraform-google-cloud)
+      require_make_target "${makefile}" "init"
+      require_make_target "${makefile}" "plan"
+      require_make_target "${makefile}" "apply"
+      require_make_target "${makefile}" "destroy"
+      require_make_target "${makefile}" "validate"
       ;;
   esac
+}
+
+validate_terraform_if_available() {
+  if command -v terraform >/dev/null 2>&1; then
+    terraform fmt -check -recursive "${ROOT_DIR}/templates/terraform-google-cloud"
+
+    local env_dir
+    for env_dir in "${ROOT_DIR}/templates/terraform-google-cloud/envs/dev" "${ROOT_DIR}/templates/terraform-google-cloud/envs/prod"; do
+      local tf_log
+      tf_log="$(mktemp)"
+
+      if (
+        cd "${env_dir}"
+        terraform init -backend=false >"${tf_log}" 2>&1 && terraform validate >>"${tf_log}" 2>&1
+      ); then
+        echo "terraform validate completed for ${env_dir##*/}"
+      elif grep -Eq 'registry\.terraform\.io|no such host|Failed to query available provider packages' "${tf_log}"; then
+        echo "terraform init/validate skipped for ${env_dir##*/} because providers could not be resolved in the current environment"
+      else
+        cat "${tf_log}" >&2
+        rm -f "${tf_log}"
+        exit 1
+      fi
+
+      rm -f "${tf_log}"
+    done
+  else
+    echo "terraform not found; skipping terraform fmt/validate"
+  fi
 }
 
 main() {
@@ -105,6 +141,7 @@ main() {
     validate_template_specific "${name}"
   done
 
+  validate_terraform_if_available
   echo "Template validation completed successfully."
 }
 

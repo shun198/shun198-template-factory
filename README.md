@@ -5,6 +5,7 @@
 ## Included Templates
 
 - `templates/golang`: Go 1.25+ starter for CLI, HTTP API, and batch jobs
+- `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
 
 ## Repository Layout
 
@@ -25,6 +26,7 @@ template-factory/
 ```bash
 make validate
 ./scripts/create-template.sh golang my-go-service
+./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ```
 
 ## What `make validate` Does
@@ -33,6 +35,7 @@ make validate
 - validates required template files exist
 - validates required `make` targets exist in each template
 - validates root documentation and workflow files exist
+- runs Terraform formatting checks when Terraform is available
 
 ## Creating a Project From a Template
 
@@ -41,6 +44,9 @@ make validate
 ```
 
 The script copies a template into a new directory and replaces placeholders such as `__PROJECT_NAME__`, `__PROJECT_SLUG__`, and `__PYTHON_PACKAGE__`.
+./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+```
+
 The script copies the selected template into a new directory and replaces `__PROJECT_NAME__` and `__PROJECT_SLUG__`.
 
 ## Design Principles
@@ -56,5 +62,6 @@ The script copies the selected template into a new directory and replaces `__PRO
 1. Update the relevant template under `templates/`.
 2. Keep `README.md`, `AGENTS.md`, `CLAUDE.md`, `Makefile`, `.vscode/launch.json`, and `.github/workflows/ci.yml` aligned.
 3. Run `make validate`.
+4. If you changed Terraform files, also run template-level Terraform checks where available.
 
 See [docs/architecture.md](/Users/shunichihirose/repo/shun198-template-factory/docs/architecture.md), [docs/template-policy.md](/Users/shunichihirose/repo/shun198-template-factory/docs/template-policy.md), [AGENTS.md](/Users/shunichihirose/repo/shun198-template-factory/AGENTS.md), and [CLAUDE.md](/Users/shunichihirose/repo/shun198-template-factory/CLAUDE.md) for repository rules.

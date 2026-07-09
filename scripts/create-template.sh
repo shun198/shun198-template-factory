@@ -11,6 +11,7 @@ Usage:
 
 Examples:
   ./scripts/create-template.sh golang my-go-service
+  ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 EOF
 }
 
@@ -48,6 +49,7 @@ rename_placeholder_paths() {
     -name '*__PROJECT_NAME__*' -o \
     -name '*__PROJECT_SLUG__*' -o \
     -name '*__PYTHON_PACKAGE__*' \
+    -name '*__PROJECT_SLUG__*' \
   \) -print0)
 }
 
