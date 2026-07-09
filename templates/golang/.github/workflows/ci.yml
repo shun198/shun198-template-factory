@@ -1,0 +1,29 @@
+name: golang-template-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+
+      - name: Setup
+        run: make setup
+
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.12.2
+          args: ./...
+
+      - name: Format check
+        run: test -z "$(gofmt -l .)"
+
+      - name: Test
+        run: make test
