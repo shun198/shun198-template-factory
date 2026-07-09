@@ -22,7 +22,9 @@ COMMON_COMMANDS=(
 )
 
 TEMPLATE_NAMES=(
+  "golang"
   "terraform-google-cloud"
+  "nestjs"
   "python"
 )
 
@@ -91,12 +93,20 @@ validate_template_specific() {
   makefile="$(template_dir "${name}")/Makefile"
 
   case "${name}" in
+    golang)
+      require_file "${dir}/.env.example"
+      require_make_target "${makefile}" "dev"
+      ;;
     terraform-google-cloud)
       require_make_target "${makefile}" "init"
       require_make_target "${makefile}" "plan"
       require_make_target "${makefile}" "apply"
       require_make_target "${makefile}" "destroy"
       require_make_target "${makefile}" "validate"
+      ;;
+    nestjs)
+      require_file "${dir}/.env.example"
+      require_make_target "${makefile}" "dev"
       ;;
     python)
       require_file "${dir}/.env.example"

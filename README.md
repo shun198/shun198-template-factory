@@ -4,7 +4,9 @@
 
 ## Included Templates
 
+- `templates/golang`: Go 1.25+ starter for CLI, HTTP API, and batch jobs
 - `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
+- `templates/nestjs`: NestJS starter for backend and internal APIs
 - `templates/python`: Python 3.14+ starter for CLI, small API, and automation use cases
 
 ## Repository Layout
@@ -25,7 +27,9 @@ template-factory/
 
 ```bash
 make validate
+./scripts/create-template.sh golang my-go-service
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh python my-python-app
 ```
 
@@ -41,11 +45,13 @@ make validate
 ## Creating a Project From a Template
 
 ```bash
+./scripts/create-template.sh golang my-go-service
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh python my-python-app
 ```
 
-The script copies the selected template into a new directory and replaces `__PROJECT_NAME__` and `__PROJECT_SLUG__`. For the Python template, it also updates the generated package path and `__PYTHON_PACKAGE__`.
+The script copies the selected template into a new directory and replaces `__PROJECT_NAME__` and `__PROJECT_SLUG__`. For the Python template, it also updates `__PYTHON_PACKAGE__` and the generated package path.
 
 ## Design Principles
 

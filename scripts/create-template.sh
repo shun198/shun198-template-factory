@@ -11,7 +11,9 @@ Usage:
   ./scripts/create-template.sh <template-name> <destination-directory>
 
 Examples:
+  ./scripts/create-template.sh golang my-go-service
   ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
+  ./scripts/create-template.sh nestjs my-nest-api
   ./scripts/create-template.sh python my-python-app
 EOF
 }
@@ -31,7 +33,7 @@ replace_placeholders() {
   local python_package="$4"
 
   while IFS= read -r -d '' file; do
-    perl -0pi -e "s/__PROJECT_NAME__/${project_name}/g; s/__PROJECT_SLUG__/${project_slug}/g; s/template_app/${python_package}/g; s/__PYTHON_PACKAGE__/${python_package}/g; s/${TEMPLATE_PYTHON_PACKAGE}/${python_package}/g" "$file"
+    perl -0pi -e "s/__PROJECT_NAME__/${project_name}/g; s/__PROJECT_SLUG__/${project_slug}/g; s/${TEMPLATE_PYTHON_PACKAGE}/${python_package}/g; s/__PYTHON_PACKAGE__/${python_package}/g" "$file"
   done < <(find "$target_dir" -type f \
     ! -path '*/.git/*' \
     ! -path '*/node_modules/*' \
@@ -48,7 +50,7 @@ rename_placeholder_paths() {
     local renamed_path="$path"
     renamed_path="${renamed_path//__PROJECT_NAME__/${project_name}}"
     renamed_path="${renamed_path//__PROJECT_SLUG__/${project_slug}}"
-    renamed_path="${renamed_path//template_app/${python_package}}"
+    renamed_path="${renamed_path//${TEMPLATE_PYTHON_PACKAGE}/${python_package}}"
     renamed_path="${renamed_path//__PYTHON_PACKAGE__/${python_package}}"
 
     if [[ "$path" != "$renamed_path" ]]; then
@@ -57,7 +59,7 @@ rename_placeholder_paths() {
   done < <(find "$target_dir" -depth \( \
     -name '*__PROJECT_NAME__*' -o \
     -name '*__PROJECT_SLUG__*' -o \
-    -name '*template_app*' -o \
+    -name "*${TEMPLATE_PYTHON_PACKAGE}*" -o \
     -name '*__PYTHON_PACKAGE__*' \
   \) -print0)
 }
@@ -69,9 +71,6 @@ rename_python_package_dir() {
   local destination_dir="${target_dir}/src/${python_package}"
 
   if [[ -d "${source_dir}" && "${source_dir}" != "${destination_dir}" ]]; then
-    if [[ -d "${destination_dir}" ]]; then
-      rmdir "${destination_dir}"
-    fi
     mv "${source_dir}" "${destination_dir}"
   fi
 }
@@ -107,7 +106,10 @@ main() {
   cp -R "${template_dir}" "${destination_dir}"
   replace_placeholders "${destination_dir}" "${destination_name}" "${project_slug}" "${python_package}"
   rename_placeholder_paths "${destination_dir}" "${destination_name}" "${project_slug}" "${python_package}"
-  rename_python_package_dir "${destination_dir}" "${python_package}"
+
+  if [[ "${template_name}" == "python" ]]; then
+    rename_python_package_dir "${destination_dir}" "${python_package}"
+  fi
 
   echo "Created '${destination_name}' from template '${template_name}'."
 }
