@@ -2,19 +2,24 @@ name: nextjs-template-ci
 
 on:
   push:
+    branches:
+      - main
   pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@b0f76dfb45f55f8421693e4803ac7bb65143bd34 # v6
         with:
           package_json_file: package.json
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: package.json
           cache: pnpm
@@ -33,3 +38,6 @@ jobs:
 
       - name: Build
         run: make build
+
+      - name: Verify generated files
+        run: git diff --exit-code -- next-env.d.ts tsconfig.json

@@ -116,6 +116,7 @@ validate_template_specific() {
       ;;
     nextjs)
       require_file "${dir}/.env.example"
+      require_file "${dir}/.dockerignore"
       require_make_target "${makefile}" "dev"
       require_make_target "${makefile}" "build"
       ;;
