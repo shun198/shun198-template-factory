@@ -1,0 +1,8 @@
+.git
+.github
+.next
+.pnpm-store
+node_modules
+coverage
+.env*
+!.env.example

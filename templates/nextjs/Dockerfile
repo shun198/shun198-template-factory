@@ -1,12 +1,34 @@
-FROM node:22-alpine
+FROM node:22-alpine AS base
+
+WORKDIR /app
+RUN corepack enable
+
+FROM base AS dependencies
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+FROM base AS builder
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY . .
+RUN pnpm run build
+
+FROM node:22-alpine AS runner
+
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV HOSTNAME=0.0.0.0
 
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml ./
-RUN corepack enable && pnpm install
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 nextjs
 
-COPY . .
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-RUN pnpm run build
+USER nextjs
 
-CMD ["pnpm", "run", "start"]
+EXPOSE 3000
+
+CMD ["node", "server.js"]
