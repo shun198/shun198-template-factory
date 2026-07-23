@@ -8,7 +8,7 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
-ARG NEXT_PUBLIC_APP_NAME=__PROJECT_NAME__
+ARG NEXT_PUBLIC_APP_NAME="__PROJECT_NAME__"
 ENV NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME}
 
 COPY --from=dependencies /app/node_modules ./node_modules
