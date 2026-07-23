@@ -46,7 +46,7 @@ as a build argument when creating the image:
 
 ```bash
 docker build \
-  --build-arg NEXT_PUBLIC_APP_NAME="**PROJECT_NAME**" \
+  --build-arg NEXT_PUBLIC_APP_NAME="__PROJECT_NAME__" \
   --tag __PROJECT_SLUG__:local \
   .
 docker run --rm --publish 3000:3000 __PROJECT_SLUG__:local

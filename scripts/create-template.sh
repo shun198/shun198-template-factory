@@ -34,7 +34,7 @@ replace_placeholders() {
   local python_package="$4"
 
   while IFS= read -r -d '' file; do
-    perl -0pi -e "s/__PROJECT_NAME__/${project_name}/g; s/__PROJECT_SLUG__/${project_slug}/g; s/${TEMPLATE_PYTHON_PACKAGE}/${python_package}/g; s/__PYTHON_PACKAGE__/${python_package}/g" "$file"
+    perl -0pi -e "s/__PROJECT_NAME__/${project_name}/g; s/\*\*PROJECT_NAME\*\*/${project_name}/g; s/__PROJECT_SLUG__/${project_slug}/g; s/${TEMPLATE_PYTHON_PACKAGE}/${python_package}/g; s/__PYTHON_PACKAGE__/${python_package}/g" "$file"
   done < <(find "$target_dir" -type f \
     ! -path '*/.git/*' \
     ! -path '*/node_modules/*' \

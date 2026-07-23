@@ -139,6 +139,22 @@ validate_python_generation() {
   rm -rf "${temp_dir}"
 }
 
+validate_nextjs_generation() {
+  local temp_project="tmp-nextjs-validate-project"
+  local temp_dir="${ROOT_DIR}/${temp_project}"
+
+  rm -rf "${temp_dir}"
+  "${ROOT_DIR}/scripts/create-template.sh" nextjs "${temp_project}" >/dev/null
+
+  if grep -R -E '__PROJECT_NAME__|__PROJECT_SLUG__|\*\*PROJECT_NAME\*\*' "${temp_dir}" >/dev/null; then
+    echo "Generated Next.js project contains unresolved placeholders" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  rm -rf "${temp_dir}"
+}
+
 validate_terraform_if_available() {
   if command -v terraform >/dev/null 2>&1; then
     terraform fmt -check -recursive "${ROOT_DIR}/templates/terraform-google-cloud"
@@ -177,6 +193,7 @@ main() {
   done
 
   validate_python_generation
+  validate_nextjs_generation
   validate_terraform_if_available
   echo "Template validation completed successfully."
 }
