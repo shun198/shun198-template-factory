@@ -17,7 +17,7 @@ Next.js App Router starter for SaaS frontends, dashboards, and internal admin to
 
 ## Requirements
 
-- Node.js 22+
+- Node.js 24 LTS
 - `pnpm` 9+
 
 ## Getting Started
@@ -37,6 +37,19 @@ make test
 make lint
 make format
 make build
+```
+
+## Docker
+
+`NEXT_PUBLIC_APP_NAME` is compiled into the static page at build time. Pass it
+as a build argument when creating the image:
+
+```bash
+docker build \
+  --build-arg NEXT_PUBLIC_APP_NAME="**PROJECT_NAME**" \
+  --tag __PROJECT_SLUG__:local \
+  .
+docker run --rm --publish 3000:3000 __PROJECT_SLUG__:local
 ```
 
 ## Layout

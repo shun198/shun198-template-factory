@@ -1,4 +1,4 @@
-FROM node:22-alpine AS base
+FROM node:24-alpine@sha256:a0b9bf06e4e6193cf7a0f58816cc935ff8c2a908f81e6f1a95432d679c54fbfd AS base
 
 WORKDIR /app
 RUN corepack enable
@@ -8,11 +8,14 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
+ARG NEXT_PUBLIC_APP_NAME=__PROJECT_NAME__
+ENV NEXT_PUBLIC_APP_NAME=${NEXT_PUBLIC_APP_NAME}
+
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 RUN pnpm run build
 
-FROM node:22-alpine AS runner
+FROM node:24-alpine@sha256:a0b9bf06e4e6193cf7a0f58816cc935ff8c2a908f81e6f1a95432d679c54fbfd AS runner
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
