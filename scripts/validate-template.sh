@@ -140,8 +140,10 @@ validate_python_generation() {
 }
 
 validate_nextjs_generation() {
-  local temp_project='tmp-nextjs-&-$-\-validate-project'
+  local temp_project="tmp-nextjs-validate-project"
   local temp_dir="${ROOT_DIR}/${temp_project}"
+  local invalid_project="tmp-nextjs-invalid'name"
+  local invalid_dir="${ROOT_DIR}/${invalid_project}"
 
   rm -rf "${temp_dir}"
   "${ROOT_DIR}/scripts/create-template.sh" nextjs "${temp_project}" >/dev/null
@@ -159,6 +161,16 @@ validate_nextjs_generation() {
   fi
 
   rm -rf "${temp_dir}"
+
+  if "${ROOT_DIR}/scripts/create-template.sh" nextjs "${invalid_project}" >/dev/null 2>&1; then
+    echo "Next.js template generation accepted an unsafe project name" >&2
+    exit 1
+  fi
+
+  if [[ -e "${invalid_dir}" ]]; then
+    echo "Rejected Next.js project name created a destination directory" >&2
+    exit 1
+  fi
 }
 
 validate_terraform_if_available() {

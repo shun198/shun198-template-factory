@@ -42,6 +42,7 @@ make validate
 - validates required `make` targets exist in each template
 - validates root documentation and workflow files exist
 - validates Python template generation
+- validates Next.js template generation and placeholder replacement
 - runs Terraform formatting checks when Terraform is available
 
 ## Creating a Project From a Template
@@ -55,6 +56,9 @@ make validate
 ```
 
 The script copies the selected template into a new directory and replaces `__PROJECT_NAME__` and `__PROJECT_SLUG__`. For the Python template, it also updates `__PYTHON_PACKAGE__` and the generated package path.
+
+Destination names must start with an alphanumeric character and may contain
+only letters, numbers, dots, underscores, and hyphens.
 
 ## Design Principles
 

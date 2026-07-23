@@ -27,6 +27,15 @@ python_package_name() {
   echo "$1" | tr '-' '_' | sed -E 's/[^a-z0-9_]+/_/g'
 }
 
+validate_destination_name() {
+  local destination_name="$1"
+
+  if [[ ! "${destination_name}" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+    echo "Error: destination must start with an alphanumeric character and contain only letters, numbers, dots, underscores, and hyphens." >&2
+    return 1
+  fi
+}
+
 replace_placeholders() {
   local target_dir="$1"
   local project_name="$2"
@@ -105,6 +114,8 @@ main() {
     find "${TEMPLATES_DIR}" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort >&2
     exit 1
   fi
+
+  validate_destination_name "${destination_name}"
 
   if [[ -e "${destination_dir}" ]]; then
     echo "Error: destination '${destination_name}' already exists." >&2
