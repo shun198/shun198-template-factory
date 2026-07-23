@@ -140,7 +140,7 @@ validate_python_generation() {
 }
 
 validate_nextjs_generation() {
-  local temp_project="tmp-nextjs-validate-project"
+  local temp_project='tmp-nextjs-&-$-\-validate-project'
   local temp_dir="${ROOT_DIR}/${temp_project}"
 
   rm -rf "${temp_dir}"
@@ -148,6 +148,12 @@ validate_nextjs_generation() {
 
   if grep -R -E '__PROJECT_NAME__|__PROJECT_SLUG__|\*\*PROJECT_NAME\*\*' "${temp_dir}" >/dev/null; then
     echo "Generated Next.js project contains unresolved placeholders" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  if ! grep -Fqx "NEXT_PUBLIC_APP_NAME=${temp_project}" "${temp_dir}/.env.example"; then
+    echo "Generated Next.js project did not preserve the literal project name" >&2
     rm -rf "${temp_dir}"
     exit 1
   fi
