@@ -29,7 +29,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@v7
         with:
           go-version-file: templates/golang/go.mod
 
@@ -95,7 +95,7 @@ jobs:
         with:
           package_json_file: templates/nestjs/package.json
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: templates/nestjs/package.json
           cache: pnpm
@@ -124,11 +124,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version-file: templates/python/.python-version
 
-      - uses: astral-sh/setup-uv@v8.3.2
+      - uses: astral-sh/setup-uv@v9.0.0
         with:
           enable-cache: true
 
@@ -159,7 +159,7 @@ jobs:
         with:
           package_json_file: templates/nextjs/package.json
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
         with:
           node-version-file: templates/nextjs/package.json
           cache: pnpm
