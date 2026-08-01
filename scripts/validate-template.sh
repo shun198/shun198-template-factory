@@ -116,6 +116,7 @@ validate_template_specific() {
       ;;
     nextjs)
       require_file "${dir}/.env.example"
+      require_file "${dir}/.dockerignore"
       require_make_target "${makefile}" "dev"
       require_make_target "${makefile}" "build"
       ;;
@@ -136,6 +137,40 @@ validate_python_generation() {
   fi
 
   rm -rf "${temp_dir}"
+}
+
+validate_nextjs_generation() {
+  local temp_project="tmp-nextjs-validate-project"
+  local temp_dir="${ROOT_DIR}/${temp_project}"
+  local invalid_project="tmp-nextjs-invalid'name"
+  local invalid_dir="${ROOT_DIR}/${invalid_project}"
+
+  rm -rf "${temp_dir}"
+  "${ROOT_DIR}/scripts/create-template.sh" nextjs "${temp_project}" >/dev/null
+
+  if grep -R -E '__PROJECT_NAME__|__PROJECT_SLUG__|\*\*PROJECT_NAME\*\*' "${temp_dir}" >/dev/null; then
+    echo "Generated Next.js project contains unresolved placeholders" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  if ! grep -Fqx "NEXT_PUBLIC_APP_NAME=${temp_project}" "${temp_dir}/.env.example"; then
+    echo "Generated Next.js project did not preserve the literal project name" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  rm -rf "${temp_dir}"
+
+  if "${ROOT_DIR}/scripts/create-template.sh" nextjs "${invalid_project}" >/dev/null 2>&1; then
+    echo "Next.js template generation accepted an unsafe project name" >&2
+    exit 1
+  fi
+
+  if [[ -e "${invalid_dir}" ]]; then
+    echo "Rejected Next.js project name created a destination directory" >&2
+    exit 1
+  fi
 }
 
 validate_terraform_if_available() {
@@ -176,6 +211,7 @@ main() {
   done
 
   validate_python_generation
+  validate_nextjs_generation
   validate_terraform_if_available
   echo "Template validation completed successfully."
 }

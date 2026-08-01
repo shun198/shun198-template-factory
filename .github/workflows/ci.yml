@@ -179,3 +179,13 @@ jobs:
 
       - name: Build
         run: make build
+
+      - name: Verify generated files
+        run: git diff --exit-code -- next-env.d.ts tsconfig.json
+
+      - name: Build Docker image
+        run: >-
+          docker build
+          --build-arg NEXT_PUBLIC_APP_NAME="CI Dashboard"
+          --tag nextjs-template:ci
+          .
