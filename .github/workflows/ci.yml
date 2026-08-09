@@ -124,7 +124,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version-file: templates/python/.python-version
 
@@ -143,6 +143,92 @@ jobs:
 
       - name: Typecheck
         run: make typecheck
+
+      - name: Test
+        run: make test
+
+  python-grpc-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/python-grpc
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: templates/python-grpc/.python-version
+
+      - uses: astral-sh/setup-uv@v8.3.2
+        with:
+          enable-cache: true
+
+      - uses: bufbuild/buf-action@v1
+        with:
+          version: "1.72.0"
+          setup_only: true
+
+      - name: Validate generated project
+        run: |
+          ../../scripts/create-template.sh python-grpc tmp-python-grpc-ci
+          cd ../../tmp-python-grpc-ci
+          make setup
+          make lint
+          make typecheck
+          make test
+
+      - name: Setup
+        run: make setup
+
+      - name: Proto lint
+        run: make proto-lint
+
+      - name: Lint
+        run: make lint
+
+      - name: Format check
+        run: uv run ruff format --check .
+
+      - name: Typecheck
+        run: make typecheck
+
+      - name: Test
+        run: make test
+
+  golang-grpc-template:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: templates/golang-grpc
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: templates/golang-grpc/go.mod
+
+      - name: Validate generated project
+        run: |
+          ../../scripts/create-template.sh golang-grpc tmp-go-grpc-ci
+          cd ../../tmp-go-grpc-ci
+          make setup
+          test -z "$(gofmt -l .)"
+          make test
+
+      - name: Setup
+        run: make setup
+
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.12.2
+          working-directory: templates/golang-grpc
+          args: ./...
+
+      - name: Proto lint
+        run: make proto-lint
+
+      - name: Format check
+        run: test -z "$(gofmt -l .)"
 
       - name: Test
         run: make test

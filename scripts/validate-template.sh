@@ -26,6 +26,8 @@ TEMPLATE_NAMES=(
   "terraform-google-cloud"
   "nestjs"
   "python"
+  "python-grpc"
+  "golang-grpc"
   "nextjs"
 )
 
@@ -114,6 +116,24 @@ validate_template_specific() {
       require_make_target "${makefile}" "dev"
       require_make_target "${makefile}" "typecheck"
       ;;
+    python-grpc)
+      require_file "${dir}/.env.example"
+      require_file "${dir}/buf.yaml"
+      require_dir "${dir}/proto"
+      require_make_target "${makefile}" "dev"
+      require_make_target "${makefile}" "typecheck"
+      require_make_target "${makefile}" "proto"
+      require_make_target "${makefile}" "proto-lint"
+      ;;
+    golang-grpc)
+      require_file "${dir}/.env.example"
+      require_file "${dir}/buf.yaml"
+      require_file "${dir}/buf.gen.yaml"
+      require_dir "${dir}/proto"
+      require_make_target "${makefile}" "dev"
+      require_make_target "${makefile}" "proto"
+      require_make_target "${makefile}" "proto-lint"
+      ;;
     nextjs)
       require_file "${dir}/.env.example"
       require_make_target "${makefile}" "dev"
@@ -135,7 +155,64 @@ validate_python_generation() {
     exit 1
   fi
 
+  if ! grep -Fq "name = \"${temp_project}\"" "${temp_dir}/uv.lock"; then
+    echo "Generated Python distribution was not replaced in ${temp_dir}/uv.lock" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
   rm -rf "${temp_dir}"
+}
+
+validate_python_grpc_generation() {
+  local temp_project="tmp-python-grpc-validate-project"
+  local temp_dir="${ROOT_DIR}/${temp_project}"
+
+  rm -rf "${temp_dir}"
+  "${ROOT_DIR}/scripts/create-template.sh" python-grpc "${temp_project}" >/dev/null
+
+  if [[ ! -d "${temp_dir}/src/${temp_project//-/_}" ]]; then
+    echo "Generated Python gRPC package directory is missing: ${temp_dir}/src/${temp_project//-/_}" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  if ! grep -Fq "name = \"${temp_project}\"" "${temp_dir}/uv.lock"; then
+    echo "Generated Python gRPC distribution was not replaced in ${temp_dir}/uv.lock" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  rm -rf "${temp_dir}"
+}
+
+validate_golang_grpc_generation() {
+  local temp_project="tmp-go-grpc-validate-project"
+  local temp_dir="${ROOT_DIR}/${temp_project}"
+
+  rm -rf "${temp_dir}"
+  "${ROOT_DIR}/scripts/create-template.sh" golang-grpc "${temp_project}" >/dev/null
+
+  if ! grep -Fq "module example.com/${temp_project}" "${temp_dir}/go.mod"; then
+    echo "Generated Go gRPC module was not replaced in ${temp_dir}/go.mod" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  if grep -R "__PROJECT_" "${temp_dir}" >/dev/null; then
+    echo "Generated Go gRPC project contains unresolved placeholders" >&2
+    rm -rf "${temp_dir}"
+    exit 1
+  fi
+
+  rm -rf "${temp_dir}"
+}
+
+validate_destination_rejection() {
+  if "${ROOT_DIR}/scripts/create-template.sh" python "../outside-template-factory" >/dev/null 2>&1; then
+    echo "Template generation accepted a destination outside the repository" >&2
+    exit 1
+  fi
 }
 
 validate_terraform_if_available() {
@@ -176,6 +253,9 @@ main() {
   done
 
   validate_python_generation
+  validate_python_grpc_generation
+  validate_golang_grpc_generation
+  validate_destination_rejection
   validate_terraform_if_available
   echo "Template validation completed successfully."
 }
