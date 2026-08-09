@@ -1,0 +1,39 @@
+name: golang-grpc-template-ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - name: Setup
+        run: make setup
+
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.12.2
+          args: ./...
+
+      - name: Proto lint
+        run: make proto-lint
+
+      - name: Proto breaking check
+        if: github.event_name == 'pull_request'
+        run: bin/buf breaking --against "${{ github.event.repository.clone_url }}#format=git,commit=${{ github.event.pull_request.base.sha }}"
+
+      - name: Format check
+        run: test -z "$(gofmt -l .)"
+
+      - name: Test
+        run: make test

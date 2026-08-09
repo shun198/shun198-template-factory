@@ -8,6 +8,8 @@
 - `templates/terraform-google-cloud`: Terraform starter for Google Cloud environments
 - `templates/nestjs`: NestJS starter for backend and internal APIs
 - `templates/python`: Python 3.14+ starter for CLI, small API, and automation use cases
+- `templates/python-grpc`: Python 3.14+ starter for Protocol Buffers and gRPC services
+- `templates/golang-grpc`: Go 1.25+ starter for Protocol Buffers and gRPC services
 - `templates/nextjs`: Next.js starter for dashboards, SaaS frontends, and admin tools
 
 ## Repository Layout
@@ -32,6 +34,8 @@ make validate
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh python my-python-app
+./scripts/create-template.sh python-grpc my-python-grpc-service
+./scripts/create-template.sh golang-grpc my-go-grpc-service
 ./scripts/create-template.sh nextjs my-next-app
 ```
 
@@ -52,6 +56,8 @@ make validate
 ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
 ./scripts/create-template.sh nestjs my-nest-api
 ./scripts/create-template.sh python my-python-app
+./scripts/create-template.sh python-grpc my-python-grpc-service
+./scripts/create-template.sh golang-grpc my-go-grpc-service
 ./scripts/create-template.sh nextjs my-next-app
 ```
 

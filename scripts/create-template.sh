@@ -4,17 +4,20 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TEMPLATES_DIR="${ROOT_DIR}/templates"
 TEMPLATE_PYTHON_PACKAGE="template_app"
+TEMPLATE_PYTHON_DISTRIBUTION="template-app"
 
 usage() {
   cat <<'EOF'
 Usage:
-  ./scripts/create-template.sh <template-name> <destination-directory>
+  ./scripts/create-template.sh <template-name> <destination-name>
 
 Examples:
   ./scripts/create-template.sh golang my-go-service
   ./scripts/create-template.sh terraform-google-cloud my-gcp-stack
   ./scripts/create-template.sh nestjs my-nest-api
   ./scripts/create-template.sh python my-python-app
+  ./scripts/create-template.sh python-grpc my-python-grpc-service
+  ./scripts/create-template.sh golang-grpc my-go-grpc-service
   ./scripts/create-template.sh nextjs my-next-app
 EOF
 }
@@ -45,13 +48,15 @@ replace_placeholders() {
   while IFS= read -r -d '' file; do
     PROJECT_NAME="${project_name}" \
       PROJECT_SLUG="${project_slug}" \
+      SOURCE_PYTHON_PACKAGE="${TEMPLATE_PYTHON_PACKAGE}" \
+      SOURCE_PYTHON_DISTRIBUTION="${TEMPLATE_PYTHON_DISTRIBUTION}" \
       PYTHON_PACKAGE="${python_package}" \
-      TEMPLATE_PYTHON_PACKAGE="${TEMPLATE_PYTHON_PACKAGE}" \
       perl -0pi -e '
         s/__PROJECT_NAME__/$ENV{PROJECT_NAME}/g;
         s/\*\*PROJECT_NAME\*\*/$ENV{PROJECT_NAME}/g;
         s/__PROJECT_SLUG__/$ENV{PROJECT_SLUG}/g;
-        s/\Q$ENV{TEMPLATE_PYTHON_PACKAGE}\E/$ENV{PYTHON_PACKAGE}/g;
+        s/\Q$ENV{SOURCE_PYTHON_PACKAGE}\E/$ENV{PYTHON_PACKAGE}/g;
+        s/\Q$ENV{SOURCE_PYTHON_DISTRIBUTION}\E/$ENV{PROJECT_SLUG}/g;
         s/__PYTHON_PACKAGE__/$ENV{PYTHON_PACKAGE}/g;
       ' "$file"
   done < <(find "$target_dir" -type f \
@@ -129,7 +134,7 @@ main() {
   replace_placeholders "${destination_dir}" "${destination_name}" "${project_slug}" "${python_package}"
   rename_placeholder_paths "${destination_dir}" "${destination_name}" "${project_slug}" "${python_package}"
 
-  if [[ "${template_name}" == "python" ]]; then
+  if [[ "${template_name}" == "python" || "${template_name}" == "python-grpc" ]]; then
     rename_python_package_dir "${destination_dir}" "${python_package}"
   fi
 

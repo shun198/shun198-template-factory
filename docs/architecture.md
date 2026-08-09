@@ -31,3 +31,5 @@ The factory intentionally performs cheap structural validation locally:
 - optional Terraform formatting and validation checks when tooling exists
 
 Language-specific dependency installs are delegated to each template's own CI workflow so each starter remains independently verifiable.
+
+The gRPC starters are intentionally split by language. `python-grpc` and `golang-grpc` each own their dependencies, generated-code layout, runtime entrypoints, and CI while following the same versioned `.proto` contract conventions.
