@@ -30,6 +30,15 @@ python_package_name() {
   echo "$1" | tr '-' '_' | sed -E 's/[^a-z0-9_]+/_/g'
 }
 
+validate_destination_name() {
+  local destination_name="$1"
+
+  if [[ ! "${destination_name}" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+    echo "Error: destination must start with an alphanumeric character and contain only letters, numbers, dots, underscores, and hyphens." >&2
+    return 1
+  fi
+}
+
 replace_placeholders() {
   local target_dir="$1"
   local project_name="$2"
@@ -44,6 +53,7 @@ replace_placeholders() {
       PYTHON_PACKAGE="${python_package}" \
       perl -0pi -e '
         s/__PROJECT_NAME__/$ENV{PROJECT_NAME}/g;
+        s/\*\*PROJECT_NAME\*\*/$ENV{PROJECT_NAME}/g;
         s/__PROJECT_SLUG__/$ENV{PROJECT_SLUG}/g;
         s/\Q$ENV{SOURCE_PYTHON_PACKAGE}\E/$ENV{PYTHON_PACKAGE}/g;
         s/\Q$ENV{SOURCE_PYTHON_DISTRIBUTION}\E/$ENV{PROJECT_SLUG}/g;
@@ -103,17 +113,14 @@ main() {
   local project_slug
   local python_package
 
-  if [[ ! "${destination_name}" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
-    echo "Error: destination must be a single directory name containing only letters, numbers, dots, underscores, and hyphens." >&2
-    exit 1
-  fi
-
   if [[ ! -d "${template_dir}" ]]; then
     echo "Error: unknown template '${template_name}'." >&2
     echo "Available templates:" >&2
     find "${TEMPLATES_DIR}" -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | sort >&2
     exit 1
   fi
+
+  validate_destination_name "${destination_name}"
 
   if [[ -e "${destination_dir}" ]]; then
     echo "Error: destination '${destination_name}' already exists." >&2
