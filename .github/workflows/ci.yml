@@ -128,7 +128,7 @@ jobs:
         with:
           python-version-file: templates/python/.python-version
 
-      - uses: astral-sh/setup-uv@v9.0.0
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
 
@@ -159,7 +159,7 @@ jobs:
         with:
           python-version-file: templates/python-grpc/.python-version
 
-      - uses: astral-sh/setup-uv@v9.0.0
+      - uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
 
