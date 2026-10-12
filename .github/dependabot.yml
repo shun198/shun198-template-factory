@@ -1,36 +1,82 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
 version: 2
 updates:
-  - package-ecosystem: "uv" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "uv"
+    directory: "/templates/python-grpc"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "uv"
+    directory: "/templates/python"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "terraform" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/templates/nestjs"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "gomod" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/templates/nextjs"
     schedule:
       interval: "weekly"
-
-  - package-ecosystem: "docker" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "gomod"
+    directory: "/templates/golang-grpc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "gomod"
+    directory: "/templates/golang"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/templates/terraform-google-cloud/envs/dev"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "terraform"
+    directory: "/templates/terraform-google-cloud/envs/prod"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/templates/golang-grpc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/templates/golang"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/templates/nestjs"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/templates/nextjs"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/templates/python-grpc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/templates/python"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker-compose"
+    directory: "/templates/golang-grpc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker-compose"
+    directory: "/templates/golang"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker-compose"
+    directory: "/templates/nestjs"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker-compose"
+    directory: "/templates/python-grpc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker-compose"
+    directory: "/templates/python"
     schedule:
       interval: "weekly"
